@@ -1,0 +1,24 @@
+name: Update Useragent List
+
+on:
+  schedule:
+    - cron: '0 12 * * Sun'
+  workflow_dispatch:
+
+
+jobs:
+  download-ua-list:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+      - run: |
+          python3 -m pip install --upgrade pip
+          pip install -r ua_update/requirements.txt
+      - name: Run python script
+      - run: python3 ua_update/main.py chrome edge
+

@@ -177,7 +177,7 @@ class UserAgentUpdater:
 
     def filter_user_agents(self, user_agents: List[dict], browser: Browser, version: float, max_version_lag: float, limit: int) -> List[dict]:
         """Filter the user agents based on the version and browser type."""
-        filter_criteria = lambda x: ( #noqa: E731
+        filter_criteria = lambda x: (  # noqa: E731
             x["version"] >= (version - max_version_lag) and x["version"] <= version and x["browser"] == browser.value
         )
         filtered_useragents = list(filter(filter_criteria, user_agents))
@@ -248,9 +248,9 @@ class UserAgentUpdater:
     def _get_version(user_agent: UserAgent) -> float:
         "Get the browser version as a float."
         version_groups = user_agent.browser.version_string.split(".")
-        if len(version_groups)==0 or version_groups[0]=="":
+        if len(version_groups) == 0 or version_groups[0] == "":
             return 0.0
-        if len(version_groups)==1:
+        if len(version_groups) == 1:
             return float(version_groups[0])
         else:
             return float(".".join(version_groups[:2]))
@@ -293,10 +293,9 @@ if __name__ == "__main__":
 
     requested_browsers = [browser for browser in args.browser_args if browser in possible_browsers]
     max_version_lags = args.max_version_lag
-    if not isinstance(max_version_lags,list):
+    if not isinstance(max_version_lags, list):
         max_version_lags = [max_version_lags]
     limit = args.limit
-
 
     if len(requested_browsers) > 0:
         for requested_browser, max_version_lag in zip(requested_browsers, cycle(max_version_lags)):

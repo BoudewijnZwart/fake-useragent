@@ -104,7 +104,7 @@ class UserAgentUpdater:
 
         if remember:
             # remember the user agents for next write
-            self.ua_list.extend(parsed_user_agents)
+            self.ua_list.extend(filtered_user_agents)
 
         return filtered_user_agents
 
@@ -273,6 +273,12 @@ if __name__ == "__main__":
         type=int,
         help="The max number of user agents per browser",
     )
+    parser.add_argument(
+        "--max_version_lag",
+        type=float,
+        nargs="*",
+    )
+
     args = parser.parse_args()
     possible_browsers = [
         "chrome",
@@ -283,10 +289,14 @@ if __name__ == "__main__":
         "samsung-browser",
     ]
     requested_browsers = [browser for browser in args.browser_args if browser in possible_browsers]
+    max_version_lags = getattr(args,"max_version_lag",[0.0]*len(requested_browsers))
+    limit = args.limit
+
 
     if len(requested_browsers) > 0:
-        for requested_browser in requested_browsers:
-            new_useragents = updater.get_user_agents(browser_type=requested_browser, limit=args["limit"])
+        for requested_browser, max_version_lag in zip(requested_browsers, max_version_lags):
+            updater.get_user_agents(browser_type=requested_browser, limit=limit, remember=True, max_version_lag=max_version_lag)
+            print(limit)
 
     else:
         # If no commmand line arguments are given (so if you just run this script),

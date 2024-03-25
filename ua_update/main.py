@@ -5,6 +5,7 @@ import re
 from enum import Enum
 from pathlib import Path
 from typing import List, Union
+from itertools import cycle
 
 import requests
 from user_agents.parsers import UserAgent, parse
@@ -277,6 +278,7 @@ if __name__ == "__main__":
         "--max_version_lag",
         type=float,
         nargs="*",
+        default=0.0,
     )
 
     args = parser.parse_args()
@@ -288,15 +290,17 @@ if __name__ == "__main__":
         "opera",
         "samsung-browser",
     ]
+
     requested_browsers = [browser for browser in args.browser_args if browser in possible_browsers]
-    max_version_lags = getattr(args,"max_version_lag",[0.0]*len(requested_browsers))
+    max_version_lags = args.max_version_lag
+    if not isinstance(max_version_lags,list):
+        max_version_lags = [max_version_lags]
     limit = args.limit
 
 
     if len(requested_browsers) > 0:
-        for requested_browser, max_version_lag in zip(requested_browsers, max_version_lags):
+        for requested_browser, max_version_lag in zip(requested_browsers, cycle(max_version_lags)):
             updater.get_user_agents(browser_type=requested_browser, limit=limit, remember=True, max_version_lag=max_version_lag)
-            print(limit)
 
     else:
         # If no commmand line arguments are given (so if you just run this script),

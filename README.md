@@ -145,9 +145,9 @@ ua.getBrowser('firefox')
 You can override the fallback string using the `fallback` parameter, in very rare cases something failed:
 
 ```py
-import fake_useragent
+from fake_useragent import UserAgent
 
-ua = fake_useragent.UserAgent(fallback='your favorite Browser')
+ua = UserAgent(fallback='your favorite Browser')
 # in case if something went wrong, one more time it is REALLY!!! rare case
 ua.random == 'your favorite Browser'
 ```
@@ -169,9 +169,9 @@ At least this will prevent you from raising FakeUserAgentError when attribute no
 For example, when using fake*useragent with `injections <https://github.com/tailhook/injections>`* you need to:
 
 ```py
-import fake_useragent
+from fake_useragent import UserAgent
 
-ua = fake_useragent.UserAgent(safe_attrs=('__injections__',))
+ua = UserAgent(safe_attrs=('__injections__',))
 ```
 
 Please, do not use if you don't understand why you need this.
@@ -185,10 +185,10 @@ Make sure that you using latest version!
 pip install --upgrade fake-useragent
 ```
 
-Or if that isn't working, try to install the latest package version like this (`1.5.0` is an example, check what the [latest version is on PyPi](https://pypi.org/project/fake-useragent/#history)):
+Or if that isn't working, try to install the latest package version like this (`1.5.1` is an example, check what the [latest version is on PyPi](https://pypi.org/project/fake-useragent/#history)):
 
 ```sh
-pip install fake-useragent==1.5.0
+pip install fake-useragent==1.5.1
 ```
 
 Check version via the Python console:
@@ -248,6 +248,10 @@ black .
 _Note:_ When ruff v1.0 releases, we most likely move fully towards `ruff` instead of `black`.
 
 ### Changelog
+
+- 1.5.1 March 16, 2024
+
+  - Remove trailing spaces in user agent strings
 
 - 1.5.0 March 8, 2024
 
